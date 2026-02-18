@@ -266,18 +266,22 @@
     <script>
       const FALLBACK_ID = "698f0ecd52abbdb60de402f1";
       window.currentArtworkId = null;
+
+            function getArtworkIdFromQuery() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+        const cleaned = id ? id.trim() : "";
+        return cleaned ? cleaned : FALLBACK_ID;
+      }
       async function LoadApiData() {
         try {
-          // 🔹 1. URL se ID extract karo
-          const currentUrl = window.location.href;
-          let extractedId = null;
-          const match = currentUrl.match(/public\/([a-zA-Z0-9]+)/);
-          if (match && match[1]) {
-            extractedId = match[1];
-          }
-          const artworkId = extractedId || FALLBACK_ID;
+          // ✅ 1) Get artwork id from query param: ?id=
+          const artworkId = getArtworkIdFromQuery();
           window.currentArtworkId = artworkId;
+          window.artworkId = artworkId;
+
           console.log("Using Artwork ID:", artworkId);
+
           // 🔹 2. API Call
           const apiUrl = `https://api.scripictural.tecshield.net/api/artworks/public/${artworkId}`;
           const response = await fetch(apiUrl);

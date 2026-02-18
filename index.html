@@ -271,6 +271,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
         const cleaned = id ? id.trim() : "";
+        console.log("Using query function ", cleaned);
         return cleaned ? cleaned : FALLBACK_ID;
       }
       async function LoadApiData() {

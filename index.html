@@ -267,7 +267,7 @@
       const FALLBACK_ID = "698f0ecd52abbdb60de402f1";
       window.currentArtworkId = null;
 
-            function getArtworkIdFromQuery() {
+      function getArtworkIdFromQuery() {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get("id");
         const cleaned = id ? id.trim() : "";
@@ -652,6 +652,26 @@
         //place global settings here
         INTERNAL_SMOOTHFACTOR_POS: 0.075,
       };
+
+      function CleanupCamera() {
+        console.log("Cleaning up camera...");
+
+        if (window.webcamStream) {
+          window.webcamStream.getTracks().forEach((track) => track.stop());
+          window.webcamStream = null;
+        }
+
+        const video = document.getElementById("webcam-video");
+        if (video && video.srcObject) {
+          video.srcObject = null;
+        }
+      }
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          CleanupCamera();
+        }
+      });
     </script>
   </body>
 </html>
